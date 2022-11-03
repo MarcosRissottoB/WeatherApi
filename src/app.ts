@@ -1,23 +1,27 @@
 import Fastify from 'fastify'
+import weatherRoutes from './modules/weather/weather.route'
 
-const weatherRoutes = require('./modules/weather/weather.route')
+require('dotenv').config()
 
-const PORT = process.env.PORT || 5000
+const port = process.env.PORT || 5000
 
-const server = Fastify()
+const fastify = Fastify({
+  logger: true
+})
 
-server.get('/health', function (req, reply) {
+fastify.get('/health', function (req, reply) {
   reply.send({ status: 'Ok' })
 })
 
 const start = async () => {
-  server.register(weatherRoutes, { prefix: 'api/weather' })
-  try {
-    await server.listen(PORT, '0.0.0.0')
-    console.log('Server listin on port: ', PORT)
-  } catch (err) {
-    server.log.error(err)
-    process.exit(1)
-  }
+  fastify.register(weatherRoutes, { prefix: 'api/weather' })
+
+  fastify.listen({ port, host: '0.0.0.0' }, function (err, address) {
+    if (err) {
+      fastify.log.error(err)
+      process.exit(1)
+    }
+    fastify.log.info(`server listening on ${address}`)
+  })
 }
 start()

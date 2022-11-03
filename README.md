@@ -5,8 +5,8 @@ WeatherApi with fastify and typescript
 Development
 Create a .env file with the following
 
-WEATHER_USERNAME=test
-WEATHER_PASSWORD=test
+WEATHER_BASE_URL: 'http://api.openweathermap.org/data/2.5/',
+WEATHER_API_KEY: 'YOUR_API_KEY'
 
 Then
 

@@ -14,3 +14,6 @@ $ npm run dev
 
 Documentation
 localhost:5000/docs
+
+Postman Collection
+https://www.getpostman.com/collections/9dbe7aa5813de79cc78b

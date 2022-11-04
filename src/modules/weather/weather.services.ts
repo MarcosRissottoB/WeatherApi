@@ -12,16 +12,15 @@ const getWeather = async (city = 'Río Cuarto') => {
   }
 }
 
-export async function getWeatherCurrentCityIsHot (req: FastifyRequest, reply: FastifyReply) {
+export async function getWeatherCurrentCity (req: FastifyRequest, reply: FastifyReply) {
   try {
     const { city } = req.query
     const data = await getWeather(city)
-    let weatherCurrentCityIsHot = false
+    let currentCityHot = false
     if (data.main.temp > 15) {
-      weatherCurrentCityIsHot = true
+      currentCityHot = true
     }
-    console.log('data.main.temp', data.main.temp)
-    reply.send(weatherCurrentCityIsHot)
+    return currentCityHot
   } catch (error) {
     throw new Error(error.message)
   }

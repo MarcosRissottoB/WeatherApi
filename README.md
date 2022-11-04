@@ -11,3 +11,6 @@ WEATHER_API_KEY: 'YOUR_API_KEY'
 Then
 
 $ npm run dev
+
+Documentation
+localhost:5000/docs

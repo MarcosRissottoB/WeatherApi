@@ -2,13 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
       "baseUrl": ".",
-      "noEmit": true,
-      "target": "es6",
-      "module": "commonjs",
-      "esModuleInterop": true,
+      "noEmit": true
   },
-  "include": ["node_modules/@types", "test/**.test.ts"],
-  "exclude": [
-    "helper.ts"
-    ]
+  "include": ["node_modules/@types", "test/**/**.test.ts"],
 }

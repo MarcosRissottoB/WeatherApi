@@ -4,13 +4,7 @@ import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
 import weatherRoutes from './modules/weather/weather.route'
 import fp from 'fastify-plugin'
-
-require('dotenv').config()
-const port = process.env.PORT || 5000
-
-const fastify = Fastify({
-  logger: true
-})
+import middie from 'middie'
 
 const swaggerOptions = {
   routePrefix: '/docs',
@@ -37,15 +31,24 @@ async function redisConnect (fastify, done) {
   done()
 }
 
-const start = async (): Promise<FastifyInstance<Server, IncomingMessage, ServerResponse>> => {
+const build = async (): Promise<FastifyInstance<Server, IncomingMessage, ServerResponse>> => {
+  const fastify: FastifyInstance<
+    Server,
+    IncomingMessage,
+    ServerResponse
+  > = Fastify({
+    logger: true
+  })
+
+  // Config
   fastify.register(fp((fastify, opts, done) => {
     fastify.decorate(redisConnect)
     done()
   }))
-
   fastify
     .register(fastifySwagger)
     .register(fastifySwaggerUI, swaggerOptions)
+  fastify.register(middie)
 
   // Routes
   fastify
@@ -62,13 +65,8 @@ const start = async (): Promise<FastifyInstance<Server, IncomingMessage, ServerR
       })
     })
 
-  fastify.listen({ port, host: '0.0.0.0' }, function (err, address) {
-    if (err) {
-      fastify.log.error(err)
-      process.exit(1)
-    }
-    fastify.log.info(`server listening on ${address}`)
-  })
+  return fastify
 }
 
-start()
+export default build
+export { build }
